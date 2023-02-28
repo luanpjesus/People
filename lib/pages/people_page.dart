@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:people/models/people.dart';
+import 'package:people/models/percent_wheel.dart';
+
 import 'package:people/repository/people_repository.dart';
 
 class PeoplePage extends StatelessWidget {
@@ -37,6 +36,7 @@ class PeoplePage extends StatelessWidget {
           separatorBuilder: (_, __) => const Divider(),
         ),
       ),
+      // const PercentWhell(),
     );
   }
 }
