@@ -9,7 +9,7 @@ class PercentWhell extends StatefulWidget {
 }
 
 class _PercentWhellState extends State<PercentWhell> {
-  double _currentSliderValue = 20;
+  double _currentSliderValue = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +20,7 @@ class _PercentWhellState extends State<PercentWhell> {
             CircularPercentIndicator(
               animation: true,
               animationDuration: 500,
+              animateFromLastPercent: true,
               radius: 200,
               lineWidth: 40,
               percent: (_currentSliderValue.roundToDouble()) / 100,
@@ -35,22 +36,23 @@ class _PercentWhellState extends State<PercentWhell> {
                 value: _currentSliderValue,
                 max: 100,
                 divisions: 10,
+                autofocus: true,
                 onChanged: (double value) {
                   setState(() {
                     _currentSliderValue = value;
-                    print("object");
                   });
                 }),
             LinearPercentIndicator(
+              animateFromLastPercent: true,
               animation: true,
               animationDuration: 500,
               lineHeight: 30,
               percent: (_currentSliderValue.roundToDouble()) / 100,
               progressColor: Colors.deepPurple,
               backgroundColor: Colors.deepPurple.shade200,
-              barRadius: Radius.circular(40),
-              leading: Icon(Icons.arrow_circle_right),
-              trailing: Icon(Icons.arrow_back_ios),
+              barRadius: const Radius.circular(40),
+              leading: const Icon(Icons.arrow_circle_right),
+              trailing: const Icon(Icons.arrow_back_ios),
             )
           ],
         ),
