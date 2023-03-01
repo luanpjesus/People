@@ -3,40 +3,54 @@ import 'package:people/models/percent_wheel.dart';
 
 import 'package:people/repository/people_repository.dart';
 
-class PeoplePage extends StatelessWidget {
+class PeoplePage extends StatefulWidget {
   PeoplePage({super.key});
-  final tabela = PeopleRepository.pessoas;
+
+  @override
+  State<PeoplePage> createState() => _PeoplePageState();
+}
+
+class _PeoplePageState extends State<PeoplePage> {
+  late PessoasRepository pessoasRepo;
+
+  @override
+  void initState() {
+    super.initState();
+    pessoasRepo = PessoasRepository();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.menu_rounded),
-        title: const Text("Pessoas"),
+        title: Text("Pessoas"),
+        actions: [
+          IconButton(
+              onPressed: () => pessoasRepo.sort(),
+              icon: Icon(Icons.swap_vert_circle))
+        ],
       ),
-      body: Center(
-        child: ListView.separated(
-          itemBuilder: (BuildContext context, int pessoas) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                elevation: 1,
-                child: ListTile(
-                  leading: CircleAvatar(
-                    child: Image.asset(tabela[pessoas].icone),
-                  ),
-                  title: Text(tabela[pessoas].name),
-                  subtitle: Text(tabela[pessoas].profissao),
-                  trailing: Text(tabela[pessoas].idade.toString()),
-                ),
-              ),
-            );
-          },
-          itemCount: tabela.length,
-          separatorBuilder: (_, __) => const Divider(),
-        ),
+      body: AnimatedBuilder(
+        animation: pessoasRepo,
+        builder: (context, child) {
+          final pessoas = pessoasRepo.pessoas;
+
+          return (pessoas.isEmpty)
+              ? const Center(child: CircularProgressIndicator())
+              : ListView.separated(
+                  itemBuilder: (context, index) => ListTile(
+                        leading: CircleAvatar(
+                          child: ClipRRect(
+                            child: Image.network(pessoas[index].avatar),
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                        title: Text(pessoas[index].nome),
+                      ),
+                  separatorBuilder: (_, __) => const Divider(),
+                  itemCount: pessoas.length);
+        },
       ),
-      // const PercentWhell(),
     );
   }
 }
